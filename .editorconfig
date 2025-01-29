@@ -1,0 +1,26 @@
+##############################
+# Core EditorConfig Options  #
+##############################
+root = true
+
+
+# All files
+[*]
+
+# Set default indent style
+indent_style = space
+
+# Set default indent size
+indent_size = 2
+
+# Set default charset
+charset = utf-8
+
+# Set end of line character as LF (Unix style)
+end_of_line = lf
+
+# Trim trailing whitespace
+trim_trailing_whitespace = true
+
+# Ensure files end with a newline
+insert_final_newline = true
