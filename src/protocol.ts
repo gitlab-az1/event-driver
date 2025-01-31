@@ -1,6 +1,7 @@
 import { assertUnsignedInteger } from '@rapid-d-kit/safe';
 import { jsonSafeParser, jsonSafeStringify, option } from 'ndforge';
 
+import { bitwise } from './@internals/bitwise';
 import { Exception } from './@internals/errors';
 import Marshalling from './@internals/marshalling';
 
@@ -26,6 +27,10 @@ export class BufferReader implements IReader {
     }
 
     this.#buffer = _buffer;
+  }
+
+  public get byteLength(): number {
+    return this.#buffer.byteLength;
   }
 
   public read(bytes?: number): Buffer {
@@ -163,7 +168,7 @@ export function serialize(writer: IWriter, data: unknown): void {
     writer.write(data as Buffer);
 
     // Case D:
-  } else if(typeof data === 'number' && (data | 0) === data) {
+  } else if(typeof data === 'number' && bitwise.or(data, 0) === data) {
     // The data is a number that allows bitwise operations (will be a unsigned integer)
     writer.write(BufferPresets.Uint);
     writeInt32VQL(writer, data);
@@ -257,3 +262,4 @@ export function deserialize<T = any>(reader: IReader): T {
       throw new Exception(`Cannot deserialize a unknown data buffer (0x${dataType.toString(16).toUpperCase()})`, 'ERR_UNSUPPORTED_OPERATION');
   }
 }
+

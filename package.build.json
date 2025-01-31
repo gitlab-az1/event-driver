@@ -4,5 +4,13 @@
   "main": "index.js",
   "license": "GPL-3.0-only",
   "repository": "https://github.com/gitlab-az1/event-driver.git",
-  "author": "gitlab-az1 <gitlab.az1@gmail.com>"
+  "author": "gitlab-az1 <gitlab.az1@gmail.com>",
+  "dependencies": {
+    "@rapid-d-kit/async": "^0.1.1",
+    "@rapid-d-kit/disposable": "^0.1.1",
+    "@rapid-d-kit/safe": "^0.1.2",
+    "@rapid-d-kit/types": "^0.1.1",
+    "@ts-overflow/node.std": "^1.0.0",
+    "ndforge": "^1.5.1"
+  }
 }

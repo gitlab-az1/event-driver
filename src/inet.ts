@@ -1,4 +1,5 @@
 import * as net from 'node:net';
+import { IOStream } from 'ndforge';
 import { assertDefinedString, assertUnsignedInteger } from '@rapid-d-kit/safe';
 
 import bitwise from './@internals/bitwise';
@@ -22,6 +23,41 @@ type SA = {
 };
 
 export class SocketAddr implements IInspectable<SA> {
+  public static from(addr?: string): SocketAddr {
+    assertDefinedString(addr);
+
+    if(addr.startsWith('inet:')) {
+      const { authority, path } = IOStream.URI.parse(addr);
+      const [af, address] = authority.split('@');
+      
+      if(!af || isNaN(parseInt(af, 10)) || !address) {
+        throw new Exception('Invalid authority for inet URI', 'ERR_INVALID_ARGUMENT');
+      }
+
+      const [port, fl] = path.replace(/\//g, '').split(':');
+
+      if(!port || !fl) {
+        throw new Exception('Invalid path for inet URI', 'ERR_INVALID_ARGUMENT');
+      }
+
+      return new SocketAddr({
+        address,
+        port: Number(port),
+        flowlabel: Number(fl),
+        family: parseInt(af, 10) === AF_INET ? 'IPv4' : 'IPv6',
+      });
+    }
+
+    const [af, address, port, fl] = addr.split('.');
+
+    return new SocketAddr({
+      address,
+      port: Number(port),
+      flowlabel: Number(fl),
+      family: parseInt(af, 10) === AF_INET ? 'IPv4' : 'IPv6',
+    });
+  }
+
   readonly #details: SA;
 
   public constructor(_options: Omit<net.SocketAddressInitOptions, 'family'> & { family?: 'IPv4' | 'IPv6' } = {}) {
@@ -84,6 +120,14 @@ export class SocketAddr implements IInspectable<SA> {
 
   public $inspect(): SA {
     return { ...this.#details };
+  }
+
+  public toString(): string {
+    return IOStream.URI.from({
+      scheme: 'inet',
+      authority: `${this.#details.family}@${this.#details.address}`,
+      path: `/${this.#details.port}:${this.#details.flowLabel}`,
+    }).toString(true);
   }
 }
 
