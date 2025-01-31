@@ -215,12 +215,13 @@ export class WebhookServer extends EventEmitter implements IDisposable {
                 .end();
   
             const buffer = writer.drain();
-            super.emit('raw-message', Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength));
 
             if(typeof this.#options?.maxMessageSize === 'number' && buffer.byteLength > this.#options.maxMessageSize)
               return void response
                 .writeHead(413, { Connection: 'close', 'Content-Length': 0 })
                 .end();
+                
+            super.emit('raw-message', Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength));
   
             const message = await parseMessage(buffer, {
               encryptionKey: this.#options?.sec?.encryptionKey,

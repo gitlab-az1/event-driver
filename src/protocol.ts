@@ -30,7 +30,7 @@ export class BufferReader implements IReader {
   }
 
   public get byteLength(): number {
-    return this.#buffer.byteLength;
+    return this.#buffer.byteLength - this.#cursor;
   }
 
   public read(bytes?: number): Buffer {

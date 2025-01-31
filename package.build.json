@@ -1,6 +1,6 @@
 {
   "name": "event-driver",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "license": "GPL-3.0-only",
   "repository": "https://github.com/gitlab-az1/event-driver.git",
