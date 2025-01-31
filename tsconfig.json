@@ -34,11 +34,7 @@
     "noFallthroughCasesInSwitch": true,
     // "noUncheckedIndexedAccess": true,
     "paths": {
-      "@@types": ["./src/@types/index"],
-      "@@types/*": ["./src/@types/*"],
-      "@engines/*": ["./src/engines/*"],
-      "@util/*": ["./src/util/*"],
-      "@core/*": ["./src/core/*"]
+      "@util/*": ["src/@internals/util/*"],
     }
   },
   "include": ["./src/**/*.ts"],

@@ -16,10 +16,7 @@ module.exports = {
     '@babel/plugin-transform-class-properties',
     ['module-resolver', {
       alias: {
-        '@@types': './src/types',
-        '@engines': './src/engines',
         '@util': './src/util',
-        '@core': './src/core',
       },
     }],
   ],
